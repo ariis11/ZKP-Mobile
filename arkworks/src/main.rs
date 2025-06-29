@@ -84,7 +84,7 @@ fn main() {
     let data_preparation_time = start_data_preparation.elapsed();
     println!("⏱️ Data preparation time: {:?}", data_preparation_time);
 
-    let start_trusted_setup = Instant::now();
+    let start_circuit_and_setup = Instant::now();
     let pk = Groth16::<Bn254>::generate_random_parameters_with_reduction(
         HashVerificationCircuit {
             field_inputs: vec![None; 4],
@@ -98,8 +98,8 @@ fn main() {
     let vk = pk.vk.clone();
     let pvk = PreparedVerifyingKey::from(vk.clone());
     println!("✅ Trusted setup completed (PK and VK generated)");
-    let trusted_setup_time = start_trusted_setup.elapsed();
-    println!("⏱️ Trusted setup time: {:?}", trusted_setup_time);
+    let trusted_setup_time = start_circuit_and_setup.elapsed();
+    println!("⏱️ Circuit + Trusted setup time: {:?}", trusted_setup_time);
 
     let proof_circuit = HashVerificationCircuit {
         field_inputs: field_inputs.iter().map(|v| Some(*v)).collect(),
